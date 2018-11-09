@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Bookmarker</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -17,9 +18,7 @@
 
    <!-- Adding script with Node.js global in the browser context -->
    <script>
-     const button = document.querySelector('.alert');
-
-     button.addEventListener('click',()=> alert(__dirname));
+     require('./renderer');
    </script>
 </body>
 </html>
