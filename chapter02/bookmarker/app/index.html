@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Bookmarker</title>
+</head>
+
+<body>
+  <h1>Hello from Electron</h1>
+
+  <!-- Adding a button to an HTML document -->
+  <p>
+    <button class="alert">Current Directory</button>
+  </p>
+
+   <!-- Adding script with Node.js global in the browser context -->
+   <script>
+     const button = document.querySelector('.alert');
+
+     button.addEventListener('click',()=> alert(__dirname));
+   </script>
+</body>
+</html>
