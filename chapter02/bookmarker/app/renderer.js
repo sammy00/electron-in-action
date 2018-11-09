@@ -16,6 +16,7 @@ newLinkUrl.addEventListener('keyup', () => {
   newLinkSubmit.disabled = !newLinkUrl.validity.valid;
 });
 
+/*
 newLinkForm.addEventListener('submit', event => {
   event.preventDefault();
 
@@ -27,7 +28,27 @@ newLinkForm.addEventListener('submit', event => {
     .then(findTitle)
     .then(title => storeLink(title, url))
     .then(clearForm)
-    .then(renderLinks);
+    .then(renderLinks)
+    .catch(error => handleError(error,url));
+});
+*/
+
+// format according to ES7
+newLinkForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const url = newLinkUrl.value;
+
+  try {
+    let response = await fetch(url);
+    validateResponse(response);
+    storeLink(findTitle(parseResponse(await response.text())), url);
+
+    clearForm();
+    renderLinks();
+  } catch (err) {
+    handleError(err, url);
+  }
 });
 
 const clearForm = () => {
@@ -52,6 +73,16 @@ const getLinks = () => {
     .map(key => JSON.parse(localStorage.getItem(key)));
 };
 
+const handleError = (err, url) => {
+  errorMessage.innerHTML = `
+There was an issue adding "${url}": ${err.message}
+`.trim();
+
+  setTimeout(() => {
+    errorMessage.innerText = null
+  }, 5000);
+}
+
 const parseResponse = (text) => {
   return parser.parseFromString(text, 'text/html');
 };
@@ -66,3 +97,11 @@ const storeLink = (title, url) => {
     url: url
   }));
 };
+
+const validateResponse = (response) => {
+  if (response.ok) {
+    return response;
+  }
+
+  throw new Error(`Status code of ${response.status} ${response.statusText}`);
+}
