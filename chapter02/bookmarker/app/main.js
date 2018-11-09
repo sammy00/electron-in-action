@@ -11,5 +11,5 @@ app.on('ready', () => {
   //  Loading an HTML document into the main window: ./app/main.js
   mainWindow.loadFile(__dirname+'/index.html');
   // open dev tool 
-  //mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 });

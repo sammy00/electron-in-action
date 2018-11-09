@@ -1,24 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="Content-Security-Policy" 
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline';
+      connect-src *">
   <title>Bookmarker</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1>Hello from Electron</h1>
+  <h1>Bookmarker</h1>
 
-  <!-- Adding a button to an HTML document -->
-  <p>
-    <button class="alert">Current Directory</button>
-  </p>
+  <div class="error-message"></div>
 
-   <!-- Adding script with Node.js global in the browser context -->
-   <script>
-     require('./renderer');
-   </script>
+  <section class="add-new-link">
+    <form class="new-link-form">
+      <input type="url" class="new-link-url" placeholder="URL" size="100" required>
+      <button type="submit" class="new-link-submit" disabled>Submit</button>
+    </form>
+  </section>
+
+  <section class="links"></section>
+
+  <section class="controls">
+    <button class="clear-storage">Clear Storage</button>
+  </section>
+
+  <script>
+    require('./renderer');
+  </script>
 </body>
+
 </html>
