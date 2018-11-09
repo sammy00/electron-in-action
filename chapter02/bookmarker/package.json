@@ -1,0 +1,14 @@
+{
+  "name": "bookmarker",
+  "version": "0.1.0",
+  "description": "Our very first Electron application",
+  "main": "./app/main.js",
+  "author": "sammy00",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^3.0.8"
+  },
+  "scripts": {
+    "start": "electron ."
+  }
+}
