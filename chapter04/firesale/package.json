@@ -1,0 +1,15 @@
+{
+  "name": "firesale",
+  "version": "1.0.0",
+  "main": "./app/main.js",
+  "author": "samy00",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^3.0.8",
+    "marked": "^0.5.1",
+    "materialize-css": "1.0.0"
+  },
+  "scripts": {
+    "start": "electron ."
+  }
+}
