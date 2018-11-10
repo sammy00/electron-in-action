@@ -16,6 +16,10 @@ markdownView.addEventListener('keyup', (event) => {
   console.log('hello');
 });
 
+openFileButton.addEventListener('click',()=>{
+  alert('You clicked the "Open File" button.');
+});
+
 const renderMarkdownToHTML = (markdown) => {
   htmlView.innerHTML = marked(markdown, { sanitize: true });
 };
