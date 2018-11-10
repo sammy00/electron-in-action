@@ -26,18 +26,38 @@ document.addEventListener('dragover', (event) => event.preventDefault());
 document.addEventListener('dragleave', (event) => event.preventDefault());
 document.addEventListener('drop', (event) => event.preventDefault());
 
+ipcRenderer.on('file-changed', (event, file, content) => {
+  remote.dialog.showMessageBox(currentWindow, {
+    type: 'warning',
+    title: 'Overwrite Current Unsaved Changes?',
+    message: 'Another application has changed this file. Load changes?',
+    buttons: ['Yes', 'Cancel'],
+    defaultId: 0,
+    cancelId: 1,
+  });
+
+  renderFile(file, content);
+});
+
 ipcRenderer.on('file-opened', (event, file, content) => {
-  // Updates the path of the currently opened file stored in the top-level scope
-  filePath = file;
-  // Updates the original content to determine if the file has unsaved changes
-  originalContent = content;
+  if (!currentWindow.isDocumentEdited()) {
+    renderFile(file, content);
+    return;
+  }
 
-  markdownView.value = content;
-  renderMarkdownToHTML(content);
+  const choice = remote.dialog.showMessageBox(currentWindow, {
+    type: 'warning',
+    title: 'Overwrite Current Unsaved Changes?',
+    message:
+      'Opening a new file in this window will overwrite your unsaved changes. Open this file anyway?',
+    buttons: ['Yes', 'Cancel'],
+    defaultId: 0,
+    cancelId: 1,
+  });
 
-  // Calls the method that updates the window’s title bar whenever
-  // a new file is opened.
-  updateUserInterface();
+  if (1 == choice) {
+    return;
+  }
 });
 
 markdownView.addEventListener('dragover', (event) => {
@@ -51,11 +71,11 @@ markdownView.addEventListener('dragover', (event) => {
 });
 
 markdownView.addEventListener('drop', (event) => {
-  const file= getDroppedFile(event);
+  const file = getDroppedFile(event);
 
   if (fileTypeIsSupported(file)) {
-    main.openFile(currentWindow,file.path);
-  }else {
+    main.openFile(currentWindow, file.path);
+  } else {
     alert('That file type is not supported');
   }
 
@@ -78,6 +98,20 @@ newFileButton.addEventListener('click', () => {
 openFileButton.addEventListener('click', () => {
   main.getFileFromUser(currentWindow);
 });
+
+const renderFile = (file, content) => {
+  // Updates the path of the currently opened file stored in the top-level scope
+  filePath = file;
+  // Updates the original content to determine if the file has unsaved changes
+  originalContent = content;
+
+  markdownView.value = content;
+  renderMarkdownToHTML(content);
+
+  // Calls the method that updates the window’s title bar whenever
+  // a new file is opened.
+  updateUserInterface(false);
+};
 
 revertButton.addEventListener('click', () => {
   markdownView.value = originalContent;

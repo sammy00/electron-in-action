@@ -1,6 +1,7 @@
 const { app, BrowserWindow, dialog } = require('electron');
 const fs = require('fs');
 
+const openFiles = new Map();
 const windows = new Set();
 
 // Creating a window when application is opened and there are no windows
@@ -52,8 +53,40 @@ const createWindow = () => {
     newWindow.show();
   });
 
+  newWindow.on('close', (event) => {
+    if (!newWindow.isDocumentEdited()) {
+      return;
+    }
+
+    // If the window has unsaved changes, prevents it from closing
+    event.preventDefault();
+
+    const choice = dialog.showMessageBox(newWindow, {
+      type: 'warning',
+      title: 'Quit with Unsaved Changes?',
+      message: 'Your changes will be lost if you do not save.',
+      buttons: ['Quit Anyway', 'Cancel'],
+      // Sets the first option as the default option
+      // if the user hits the Return key
+      defaultId: 0,
+      // Sets the second button as the button selected
+      // if the user dismisses the message box.
+      cancelId: 1,
+    });
+
+    if (0 == choice) {
+      // If the user selects "Quit Anyway", forces the window to close
+      newWindow.destroy();
+    }
+  });
+
   newWindow.on('closed', () => {
     windows.delete(newWindow);
+
+    // When the window is closed, stops the watcher for the file
+    // associated with that window.
+    stopWatchingFile(newWindow);
+
     newWindow = null;
   });
 
@@ -86,6 +119,8 @@ const openFile = (targetWindow, file) => {
   targetWindow.setRepresentedFilename(file);
 
   targetWindow.webContents.send('file-opened', file, content);
+
+  startWatchingFile(targetWindow, file);
 };
 
 const saveHTML = (targetWindow, content) => {
@@ -119,6 +154,27 @@ const saveMarkdown = (targetWindow, file, content) => {
   // Writes the contents of the buffer to the filesystem
   fs.writeFileSync(file, content);
   openFile(targetWindow, file);
+};
+
+const startWatchingFile = (targetWindow, file) => {
+  stopWatchingFile(targetWindow);
+
+  const watcher = fs.watchFile(file, (event) => {
+    if ('change' === event) {
+      const content = fs.readFileSync(file).toString();
+      targetWindow.webContents.send('file-changed', file, content);
+    }
+  });
+
+  // Tracks the watcher so we can stop it later
+  openFiles.set(targetWindow, watcher);
+};
+
+const stopWatchingFile = (targetWindow) => {
+  if (openFiles.has(targetWindow)) {
+    openFiles.get(targetWindow).stop();
+    openFiles.delete(targetWindow);
+  }
 };
 
 exports.createWindow = createWindow;
