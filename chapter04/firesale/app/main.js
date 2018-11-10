@@ -10,7 +10,7 @@ app.on('ready', () => {
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
-    getFileFromUser();
+    //getFileFromUser();
   });
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -28,9 +28,14 @@ const getFileFromUser = () => {
     ],
   });
 
-  if (!files) {
-    return;
+  if (files) {
+    openFile(files[0]);
   }
-
-  console.log(fs.readFileSync(files[0]).toString());
 };
+
+const openFile = (file) => {
+  const content = fs.readFileSync(file).toString();
+  mainWindow.webContents.send('file-opened', file, content);
+};
+
+exports.getFileFromUser = getFileFromUser;

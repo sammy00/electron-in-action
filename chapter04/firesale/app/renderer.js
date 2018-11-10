@@ -1,3 +1,6 @@
+const { remote, ipcRenderer } = require('electron');
+const main = remote.require('./main.js');
+
 const marked = require('marked');
 
 const markdownView = document.querySelector('#markdown');
@@ -10,14 +13,19 @@ const saveHtmlButton = document.querySelector('#save-html');
 const showFileButton = document.querySelector('#show-file');
 const openInDefaultButton = document.querySelector('#open-in-default');
 
+ipcRenderer.on('file-opened', (event, file, content) => {
+  markdownView.value = content;
+  renderMarkdownToHTML(content);
+});
+
 markdownView.addEventListener('keyup', (event) => {
   console.log('world');
   renderMarkdownToHTML(event.target.value);
   console.log('hello');
 });
 
-openFileButton.addEventListener('click',()=>{
-  alert('You clicked the "Open File" button.');
+openFileButton.addEventListener('click', () => {
+  main.getFileFromUser();
 });
 
 const renderMarkdownToHTML = (markdown) => {
