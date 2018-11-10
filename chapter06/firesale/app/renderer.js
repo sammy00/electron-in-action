@@ -29,15 +29,17 @@ ipcRenderer.on('file-opened', (event, file, content) => {
   markdownView.value = content;
   renderMarkdownToHTML(content);
 
-  // Calls the method that updates the window’s title bar whenever 
+  // Calls the method that updates the window’s title bar whenever
   // a new file is opened.
   updateUserInterface();
 });
 
 markdownView.addEventListener('keyup', (event) => {
-  console.log('world');
   renderMarkdownToHTML(event.target.value);
-  console.log('hello');
+  // Whenever the user inputs a keystroke into the Markdown view, checks to see
+  // if the current content matches the content that we stored in a variable
+  // and updates the UI accordingly.
+  updateUserInterface(originalContent !== event.target.value);
 });
 
 newFileButton.addEventListener('click', () => {
@@ -52,12 +54,23 @@ const renderMarkdownToHTML = (markdown) => {
   htmlView.innerHTML = marked(markdown, { sanitize: true });
 };
 
-const updateUserInterface = () => {
+const updateUserInterface = (edited) => {
+  // edited indicates whether the document has unsaved changes
   let title = 'Fire Sale';
+
   if (filePath) {
     // Updating the window title based on the current file
     title = `${path.basename(filePath)} - ${title}`;
   }
+  if (edited) {
+    title = `${title} (Edited)`;
+  }
 
   currentWindow.setTitle(title);
+  // If edited, then updates the window accordingly
+  currentWindow.setDocumentEdited(edited);
+
+  // Enabling the Save and Revert buttons when there are unsaved changes
+  saveMarkdownButton.disabled = !edited;
+  revertButton.disabled = !edited;
 };
