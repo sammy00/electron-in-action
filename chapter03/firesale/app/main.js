@@ -14,5 +14,5 @@ app.on('ready', () => {
     mainWindow = null;
   });
 
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 });
