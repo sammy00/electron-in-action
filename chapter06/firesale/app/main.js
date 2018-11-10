@@ -102,7 +102,27 @@ const saveHTML = (targetWindow, content) => {
   fs.writeFileSync(file, content);
 };
 
+const saveMarkdown = (targetWindow, file, content) => {
+  if (!file) {
+    file = dialog.showSaveDialog(targetWindow, {
+      title: 'Save Markdown',
+      defaultPath: app.getPath('temp'),
+      filters: [{ name: 'Markdown Files', extensions: ['md', 'markdown'] }],
+    });
+  }
+
+  if (!file) {
+    // If the user selects Cancel in the File dialog box, aborts the function
+    return;
+  }
+
+  // Writes the contents of the buffer to the filesystem
+  fs.writeFileSync(file, content);
+  openFile(targetWindow, file);
+};
+
 exports.createWindow = createWindow;
 exports.getFileFromUser = getFileFromUser;
 exports.openFile = openFile;
 exports.saveHTML = saveHTML;
+exports.saveMarkdown = saveMarkdown;

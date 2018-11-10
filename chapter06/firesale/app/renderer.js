@@ -54,6 +54,11 @@ saveHtmlButton.addEventListener('click', () => {
   main.saveHTML(currentWindow, htmlView.innerHTML);
 });
 
+// Adding an event listener to the Save File button
+saveMarkdownButton.addEventListener('click', () => {
+  main.saveMarkdown(currentWindow, filePath, markdownView.value);
+});
+
 const renderMarkdownToHTML = (markdown) => {
   htmlView.innerHTML = marked(markdown, { sanitize: true });
 };
