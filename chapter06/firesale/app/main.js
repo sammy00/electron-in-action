@@ -14,11 +14,12 @@ app.on('ready', () => {
   createWindow();
 });
 
-app.on('will-finish-launching',()=>{
-  app.on('open-file',(event,file)=>{
+// Responding to external requests to open a file
+app.on('will-finish-launching', () => {
+  app.on('open-file', (event, file) => {
     const win = createWindow();
-    win.once('ready-to-show',()=>{
-      openFile(win,file);
+    win.once('ready-to-show', () => {
+      openFile(win, file);
     });
   });
 });
@@ -87,6 +88,21 @@ const openFile = (targetWindow, file) => {
   targetWindow.webContents.send('file-opened', file, content);
 };
 
+const saveHTML = (targetWindow, content) => {
+  const file = dialog.showSaveDialog(targetWindow, {
+    title: 'Save HTML',
+    defaultPath: app.getPath('temp'),
+    filters: [{ name: 'HTML Files', extensions: ['html', 'htm'] }],
+  });
+
+  if (!file) {
+    return;
+  }
+
+  fs.writeFileSync(file, content);
+};
+
 exports.createWindow = createWindow;
 exports.getFileFromUser = getFileFromUser;
 exports.openFile = openFile;
+exports.saveHTML = saveHTML;

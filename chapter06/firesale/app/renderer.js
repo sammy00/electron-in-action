@@ -50,6 +50,10 @@ openFileButton.addEventListener('click', () => {
   main.getFileFromUser(currentWindow);
 });
 
+saveHtmlButton.addEventListener('click', () => {
+  main.saveHTML(currentWindow, htmlView.innerHTML);
+});
+
 const renderMarkdownToHTML = (markdown) => {
   htmlView.innerHTML = marked(markdown, { sanitize: true });
 };
