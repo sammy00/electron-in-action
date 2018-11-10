@@ -50,6 +50,11 @@ openFileButton.addEventListener('click', () => {
   main.getFileFromUser(currentWindow);
 });
 
+revertButton.addEventListener('click', () => {
+  markdownView.value = originalContent;
+  renderMarkdownToHTML(originalContent);
+});
+
 saveHtmlButton.addEventListener('click', () => {
   main.saveHTML(currentWindow, htmlView.innerHTML);
 });
