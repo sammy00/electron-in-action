@@ -10,7 +10,17 @@ app.on('ready', () => {
 });
 
 const createWindow = () => {
-  let newWindow = new BrowserWindow({ show: false });
+  let x, y;
+
+  const currentWindow = BrowserWindow.getFocusedWindow();
+  if (currentWindow) {
+    const [a, b] = currentWindow.getPosition();
+
+    x = a + 10;
+    y = b + 10;
+  }
+
+  let newWindow = new BrowserWindow({ x, y, show: false });
 
   newWindow.loadFile(__dirname + '/index.html');
 
