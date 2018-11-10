@@ -14,6 +14,15 @@ app.on('ready', () => {
   createWindow();
 });
 
+app.on('will-finish-launching',()=>{
+  app.on('open-file',(event,file)=>{
+    const win = createWindow();
+    win.once('ready-to-show',()=>{
+      openFile(win,file);
+    });
+  });
+});
+
 // Keeping the application alive when all windows are closed
 app.on('window-all-closed', () => {
   if ('darwin' == process.platform) {
