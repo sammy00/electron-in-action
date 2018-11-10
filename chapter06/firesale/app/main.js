@@ -69,6 +69,9 @@ const getFileFromUser = (targetWindow) => {
 const openFile = (targetWindow, file) => {
   const content = fs.readFileSync(file).toString();
 
+  // Appending to the list of recent documents
+  app.addRecentDocument(file);
+
   // Setting the represented file in **macOS**
   targetWindow.setRepresentedFilename(file);
 
