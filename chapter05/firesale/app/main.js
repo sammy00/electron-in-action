@@ -5,8 +5,24 @@ const windows = new Set();
 
 let mainWindow = null;
 
+// Creating a window when application is opened and there are no windows
+app.on('activate', (event, hasVisibleWindows) => {
+  if (!hasVisibleWindows) {
+    createWindow();
+  }
+});
+
 app.on('ready', () => {
   createWindow();
+});
+
+// Keeping the application alive when all windows are closed
+app.on('window-all-closed', () => {
+  if ('darwin' == process.platform) {
+    return false;
+  }
+
+  app.quit();
 });
 
 const createWindow = () => {
