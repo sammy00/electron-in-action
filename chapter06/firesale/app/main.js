@@ -68,6 +68,10 @@ const getFileFromUser = (targetWindow) => {
 
 const openFile = (targetWindow, file) => {
   const content = fs.readFileSync(file).toString();
+
+  // Setting the represented file in **macOS**
+  targetWindow.setRepresentedFilename(file);
+
   targetWindow.webContents.send('file-opened', file, content);
 };
 
