@@ -60,7 +60,51 @@ const template = [
 // but is useful down the road. This targets the MacOS.
 if ('darwin' === process.platform) {
   //template.unshift({ label: 'Fire Sale' });
-  template.unshift({ label: app.getName() });
+  const appName = app.getName();
+  template.unshift({
+    label: appName,
+    submenu: [
+      {
+        label: `About ${appName}`,
+        role: 'about',
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Services',
+        role: 'services',
+        submenu: [],
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: `Hide ${appName}`,
+        accelerator: 'Command+H',
+        role: 'hide',
+      },
+      {
+        label: 'Hide Others',
+        accelerator: 'Command+Alt+H',
+        role: 'hideothers',
+      },
+      {
+        label: 'Show All',
+        role: 'unhide',
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: `Quit ${appName}`,
+        accelerator: 'Command+Q',
+        click() {
+          app.quit();
+        },
+      },
+    ],
+  });
 }
 
 module.exports = Menu.buildFromTemplate(template);
