@@ -20,4 +20,10 @@ const template = [
   },
 ];
 
+// Gets the name of the application. This won’t show up in the menu now
+// but is useful down the road. This targets the MacOS.
+if ('darwin' === process.platform) {
+  template.unshift({ label: 'Fire Sale' });
+}
+
 module.exports = Menu.buildFromTemplate(template);
