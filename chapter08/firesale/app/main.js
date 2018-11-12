@@ -1,5 +1,5 @@
 const { app, BrowserWindow, dialog, Menu } = require('electron');
-const appMenu = require('./menu');
+const createAppMenu = require('./menu');
 const fs = require('fs');
 
 const openFiles = new Map();
@@ -12,8 +12,16 @@ app.on('activate', (event, hasVisibleWindows) => {
   }
 });
 
+app.on('focus', () => {
+  //Creates a new application menu whenever a new window gains focus
+  createAppMenu();
+});
+
 app.on('ready', () => {
-  Menu.setApplicationMenu(appMenu);
+  //Menu.setApplicationMenu(appMenu);
+  // Creates an application menu when the application is first launched and
+  // is ready
+  createAppMenu();
   createWindow();
 });
 
@@ -89,8 +97,12 @@ const createWindow = () => {
     // associated with that window.
     stopWatchingFile(newWindow);
 
+    createAppMenu();
+
     newWindow = null;
   });
+
+  newWindow.on('focus', createAppMenu);
 
   windows.add(newWindow);
 
@@ -121,6 +133,10 @@ const openFile = (targetWindow, file) => {
   targetWindow.setRepresentedFilename(file);
 
   targetWindow.webContents.send('file-opened', file, content);
+
+  // Creates a new application menu whenever a file has been opened and
+  // the represented file has been set
+  createAppMenu();
 
   startWatchingFile(targetWindow, file);
 };

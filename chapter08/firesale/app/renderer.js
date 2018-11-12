@@ -124,25 +124,6 @@ const createContextMenu = () => {
   ]);
 };
 
-/*
-// this is place here for showFile()
-const markdownContextMenu = Menu.buildFromTemplate([
-  {
-    label: 'Open File',
-    click() {
-      main.getFileFromUser();
-    },
-  },
-  { label: 'Show File in Folder', click: showFile },
-  { label: 'Open in Default Editor', click: openInDefaultApp },
-  { type: 'separator' },
-  { label: 'Cut', role: 'cut' },
-  { label: 'Copy', role: 'copy' },
-  { label: 'Paste', role: 'paste' },
-  { label: 'Select All', role: 'selectall' },
-]);
-*/
-
 // Setting up foundation for drag-and-drop events
 document.addEventListener('dragstart', (event) => event.preventDefault());
 document.addEventListener('dragover', (event) => event.preventDefault());
