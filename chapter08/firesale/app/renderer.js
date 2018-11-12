@@ -156,6 +156,8 @@ ipcRenderer.on('file-opened', (event, file, content) => {
   }
 });
 
+ipcRenderer.on('open-in-default', openInDefaultApp);
+
 ipcRenderer.on('save-html', () => {
   main.saveHTML(currentWindow, filePath, markdownView.value);
 });
@@ -163,6 +165,8 @@ ipcRenderer.on('save-html', () => {
 ipcRenderer.on('save-markdown', () => {
   main.saveMarkdown(currentWindow, filePath, markdownView.value);
 });
+
+ipcRenderer.on('show-file', showFile);
 
 markdownView.addEventListener('contextmenu', (event) => {
   event.preventDefault();
