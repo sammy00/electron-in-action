@@ -41,6 +41,9 @@ const template = [
   },
   {
     label: 'Window',
+    // The window role on the Window menu causes Electron to add a list of
+    // all open windows at the end of the menu when running in macOS
+    role: 'window',
     submenu: [
       {
         label: 'Minimize',
@@ -105,6 +108,18 @@ if ('darwin' === process.platform) {
       },
     ],
   });
+
+  const windowMenu = template.find((item) => 'Window' === item.label);
+  (windowMenu.role = 'window'),
+    windowMenu.submenu.push(
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Bring All to Front',
+        role: 'front',
+      }
+    );
 }
 
 module.exports = Menu.buildFromTemplate(template);
