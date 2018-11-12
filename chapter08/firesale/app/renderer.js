@@ -78,7 +78,6 @@ const showFile = () => {
 
   // Triggers the operating system's native file browser to open a new window
   // with the provided file path highlighted.
-  console.log('hello');
   shell.showItemInFolder(filePath);
 };
 
@@ -103,6 +102,29 @@ const updateUserInterface = (edited) => {
   revertButton.disabled = !edited;
 };
 
+const createContextMenu = () => {
+  return Menu.buildFromTemplate([
+    {
+      label: 'Open File',
+      click() {
+        main.getFileFromUser();
+      },
+    },
+    { label: 'Show File in Folder', click: showFile, enabled: !!filePath },
+    {
+      label: 'Open in Default Editor',
+      click: openInDefaultApp,
+      enabled: !!filePath,
+    },
+    { type: 'separator' },
+    { label: 'Cut', role: 'cut' },
+    { label: 'Copy', role: 'copy' },
+    { label: 'Paste', role: 'paste' },
+    { label: 'Select All', role: 'selectall' },
+  ]);
+};
+
+/*
 // this is place here for showFile()
 const markdownContextMenu = Menu.buildFromTemplate([
   {
@@ -119,6 +141,7 @@ const markdownContextMenu = Menu.buildFromTemplate([
   { label: 'Paste', role: 'paste' },
   { label: 'Select All', role: 'selectall' },
 ]);
+*/
 
 // Setting up foundation for drag-and-drop events
 document.addEventListener('dragstart', (event) => event.preventDefault());
@@ -176,7 +199,8 @@ markdownView.addEventListener('contextmenu', (event) => {
   event.preventDefault();
   //alert('a menu will go here some day');
   // window seems to be a must in macOS
-  markdownContextMenu.popup({ window: currentWindow });
+  //markdownContextMenu.popup({ window: currentWindow });
+  createContextMenu().popup({ window: currentWindow });
 });
 
 markdownView.addEventListener('dragover', (event) => {
