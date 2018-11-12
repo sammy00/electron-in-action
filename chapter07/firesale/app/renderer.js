@@ -1,4 +1,7 @@
 const { remote, ipcRenderer } = require('electron');
+// Requires the Menu module from the context of the main process
+// via the remote module
+const { Menu } = remote;
 
 const path = require('path');
 
@@ -70,8 +73,11 @@ ipcRenderer.on('save-markdown', () => {
 
 markdownView.addEventListener('contextmenu', (event) => {
   event.preventDefault();
-  alert('a menu will go here some day');
+  //alert('a menu will go here some day');
+  // window seems to be a must in macOS
+  markdownContextMenu.popup({ window: currentWindow });
 });
+
 markdownView.addEventListener('dragover', (event) => {
   const file = getDraggedFile(event);
 
@@ -111,20 +117,6 @@ openFileButton.addEventListener('click', () => {
   main.getFileFromUser(currentWindow);
 });
 
-const renderFile = (file, content) => {
-  // Updates the path of the currently opened file stored in the top-level scope
-  filePath = file;
-  // Updates the original content to determine if the file has unsaved changes
-  originalContent = content;
-
-  markdownView.value = content;
-  renderMarkdownToHTML(content);
-
-  // Calls the method that updates the window’s title bar whenever
-  // a new file is opened.
-  updateUserInterface(false);
-};
-
 revertButton.addEventListener('click', () => {
   markdownView.value = originalContent;
   renderMarkdownToHTML(originalContent);
@@ -145,6 +137,34 @@ const fileTypeIsSupported = (file) => {
 
 const getDraggedFile = (event) => event.dataTransfer.items[0];
 const getDroppedFile = (event) => event.dataTransfer.files[0];
+
+const markdownContextMenu = Menu.buildFromTemplate([
+  {
+    label: 'Open File',
+    click() {
+      main.getFileFromUser();
+    },
+  },
+  { type: 'separator' },
+  { label: 'Cut', role: 'cut' },
+  { label: 'Copy', role: 'copy' },
+  { label: 'Paste', role: 'paste' },
+  { label: 'Select All', role: 'selectall' },
+]);
+
+const renderFile = (file, content) => {
+  // Updates the path of the currently opened file stored in the top-level scope
+  filePath = file;
+  // Updates the original content to determine if the file has unsaved changes
+  originalContent = content;
+
+  markdownView.value = content;
+  renderMarkdownToHTML(content);
+
+  // Calls the method that updates the window’s title bar whenever
+  // a new file is opened.
+  updateUserInterface(false);
+};
 
 const renderMarkdownToHTML = (markdown) => {
   htmlView.innerHTML = marked(markdown, {
