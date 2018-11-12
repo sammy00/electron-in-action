@@ -1,15 +1,12 @@
-const {
-  app,
-  BrowserWindow,
-  Menu,
-  shell
-} = require('electron');
+const { app, dialog, BrowserWindow, Menu, shell } = require('electron');
 const main = require('./main');
 
 // template serves as the blueprint for the menu
-const template = [{
+const template = [
+  {
     label: 'File',
-    submenu: [{
+    submenu: [
+      {
         label: 'New File',
         accelerator: 'CommandOrControl+N',
         click() {
@@ -27,6 +24,12 @@ const template = [{
         label: 'Save File',
         accelerator: 'CommandOrControl+S',
         click(item, focusedWindow) {
+          if (!focusedWindow) {
+            return dialog.showErrorBox(
+              'Cannot Save or Export',
+              'There is currently no active document to save or export.'
+            );
+          }
           focusedWindow.webContents.send('save-markdown');
         },
       },
@@ -41,7 +44,8 @@ const template = [{
   },
   {
     label: 'Edit',
-    submenu: [{
+    submenu: [
+      {
         label: 'Undo',
         accelerator: 'CommandOrControl+Z',
         role: 'undo',
@@ -52,7 +56,7 @@ const template = [{
         role: 'redo',
       },
       {
-        type: 'separator'
+        type: 'separator',
       },
       {
         label: 'Cut',
@@ -81,7 +85,8 @@ const template = [{
     // The window role on the Window menu causes Electron to add a list of
     // all open windows at the end of the menu when running in macOS
     role: 'window',
-    submenu: [{
+    submenu: [
+      {
         label: 'Minimize',
         accelerator: 'CommandOrControl+M',
         role: 'minimize',
@@ -96,7 +101,8 @@ const template = [{
   {
     label: 'Help',
     role: 'help',
-    submenu: [{
+    submenu: [
+      {
         label: 'Visit Website',
         click() {},
       },
@@ -119,7 +125,8 @@ if ('darwin' === process.platform) {
   const appName = app.getName();
   template.unshift({
     label: appName,
-    submenu: [{
+    submenu: [
+      {
         label: `About ${appName}`,
         role: 'about',
       },
@@ -163,12 +170,15 @@ if ('darwin' === process.platform) {
 
   const windowMenu = template.find((item) => 'Window' === item.label);
   (windowMenu.role = 'window'),
-  windowMenu.submenu.push({
-    type: 'separator',
-  }, {
-    label: 'Bring All to Front',
-    role: 'front',
-  });
+    windowMenu.submenu.push(
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Bring All to Front',
+        role: 'front',
+      }
+    );
 }
 
 module.exports = Menu.buildFromTemplate(template);
