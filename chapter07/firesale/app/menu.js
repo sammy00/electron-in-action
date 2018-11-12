@@ -8,6 +8,38 @@ const main = require('./main');
 
 // template serves as the blueprint for the menu
 const template = [{
+    label: 'File',
+    submenu: [{
+        label: 'New File',
+        accelerator: 'CommandOrControl+N',
+        click() {
+          main.createWindow();
+        },
+      },
+      {
+        label: 'Open File',
+        accelerator: 'CommandOrControl+O',
+        click(item, focusedWindow) {
+          main.getFileFromUser(focusedWindow);
+        },
+      },
+      {
+        label: 'Save File',
+        accelerator: 'CommandOrControl+S',
+        click(item, focusedWindow) {
+          focusedWindow.webContents.send('save-markdown');
+        },
+      },
+      {
+        label: 'Export HTML',
+        accelerator: 'Shift+CommandOrControl+S',
+        click(item, focusedWindow) {
+          focusedWindow.webContents.send('save-html');
+        },
+      },
+    ],
+  },
+  {
     label: 'Edit',
     submenu: [{
         label: 'Undo',

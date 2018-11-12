@@ -60,6 +60,14 @@ ipcRenderer.on('file-opened', (event, file, content) => {
   }
 });
 
+ipcRenderer.on('save-html', () => {
+  main.saveHTML(currentWindow, filePath, markdownView.value);
+});
+
+ipcRenderer.on('save-markdown', () => {
+  main.saveMarkdown(currentWindow, filePath, markdownView.value);
+});
+
 markdownView.addEventListener('dragover', (event) => {
   const file = getDraggedFile(event);
 
@@ -135,7 +143,9 @@ const getDraggedFile = (event) => event.dataTransfer.items[0];
 const getDroppedFile = (event) => event.dataTransfer.files[0];
 
 const renderMarkdownToHTML = (markdown) => {
-  htmlView.innerHTML = marked(markdown, { sanitize: true });
+  htmlView.innerHTML = marked(markdown, {
+    sanitize: true,
+  });
 };
 
 const updateUserInterface = (edited) => {
