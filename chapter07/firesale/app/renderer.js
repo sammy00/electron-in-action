@@ -68,6 +68,10 @@ ipcRenderer.on('save-markdown', () => {
   main.saveMarkdown(currentWindow, filePath, markdownView.value);
 });
 
+markdownView.addEventListener('contextmenu', (event) => {
+  event.preventDefault();
+  alert('a menu will go here some day');
+});
 markdownView.addEventListener('dragover', (event) => {
   const file = getDraggedFile(event);
 
