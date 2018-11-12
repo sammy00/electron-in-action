@@ -17,7 +17,14 @@ const template = [
         label: 'Open File',
         accelerator: 'CommandOrControl+O',
         click(item, focusedWindow) {
-          main.getFileFromUser(focusedWindow);
+          if (focusedWindow) {
+            return main.getFileFromUser(focusedWindow);
+          }
+
+          const newWindow = main.createWindow();
+          newWindow.on('show', () => {
+            main.getFileFromUser(focusedWindow);
+          });
         },
       },
       {
@@ -37,6 +44,12 @@ const template = [
         label: 'Export HTML',
         accelerator: 'Shift+CommandOrControl+S',
         click(item, focusedWindow) {
+          if (!focusedWindow) {
+            return dialog.showErrorBox(
+              'Cannot Save or Export',
+              'There is currently no active document to save or export.'
+            );
+          }
           focusedWindow.webContents.send('save-html');
         },
       },
