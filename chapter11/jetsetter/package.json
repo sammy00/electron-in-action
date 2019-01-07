@@ -1,0 +1,11 @@
+{
+  "name": "jetsetter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "sammy xiangminli@alumni.sjtu.edu.cn",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "electron-prebuilt-compile": "^4.0.0"
+  }
+}
