@@ -1,11 +1,17 @@
 {
   "name": "jetsetter",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./app/main.js",
   "author": "sammy xiangminli@alumni.sjtu.edu.cn",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "electron-compile": "^6.4.4",
+    "vue": "^2.5.21"
+  },
   "devDependencies": {
-    "electron-prebuilt-compile": "^4.0.0"
+    "electron-prebuilt-compile": "4.0.0"
+  },
+  "scripts": {
+    "start": "electron ."
   }
 }
