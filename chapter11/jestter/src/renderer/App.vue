@@ -2,6 +2,7 @@
   <div id="app">
     <!--<router-view></router-view>-->
     <div class="container">
+      <new-item/>
       <items title="Unpacked Items" :items="unpacked" :on-check-off="markAsPacked"/>
       <items title="Packed Items" :items="packed" :on-check-off="markAsPacked"/>
       <div class="row center">
@@ -13,9 +14,10 @@
 
 <script>
 import Items from "./components/Items";
+import NewItem from "./components/NewItem";
 
 export default {
-  components: { Items },
+  components: { Items, NewItem },
   name: "jestter",
   metaInfo: {
     htmlAttrs: {
