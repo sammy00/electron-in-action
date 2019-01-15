@@ -21,6 +21,7 @@ export default {
   },
   methods: {
     handleSubmit() {
+      let value = this.value;
       this.addItem({ value, packed: false, id: Date.now() });
       this.value = "";
     }

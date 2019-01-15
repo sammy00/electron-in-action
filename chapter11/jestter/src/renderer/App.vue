@@ -2,7 +2,7 @@
   <div id="app">
     <!--<router-view></router-view>-->
     <div class="container">
-      <new-item/>
+      <new-item :add-item="add"/>
       <items title="Unpacked Items" :items="unpacked" :on-check-off="markAsPacked"/>
       <items title="Packed Items" :items="packed" :on-check-off="markAsPacked"/>
       <div class="row center">
@@ -42,7 +42,12 @@ export default {
     }
   },
   methods: {
+    add(item) {
+      this.items.push(item);
+      //console.log(JSON.stringify(item, null, " "));
+    },
     markAsPacked(id) {
+      console.log("hello " + id);
       let i = this.items.findIndex(item => id === item.id);
       if (i === -1) {
         return;
@@ -50,7 +55,7 @@ export default {
 
       let updated = this.items[i];
       updated.packed = !updated.packed;
-      this.items[i].splice(i, 1);
+      this.items.splice(i, 1);
       this.items.unshift(updated);
     },
     markAllAsUnpacked() {
