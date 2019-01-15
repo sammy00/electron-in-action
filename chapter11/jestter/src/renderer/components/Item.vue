@@ -1,7 +1,7 @@
 <template>
   <article class="Item">
     <label>
-      <input type="checkbox" checked="packed" onChange="onCheckOff">
+      <input type="checkbox" checked="packed" @change="onCheckOff">
       {{ value }}
     </label>
   </article>
