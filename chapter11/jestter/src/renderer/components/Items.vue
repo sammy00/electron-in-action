@@ -16,7 +16,8 @@
 import Item from "./Item";
 
 export default {
-  props: ["title", "items", "onCheckOff"]
+  props: ["title", "items", "onCheckOff"],
+  components: { Item }
 };
 </script>
 
