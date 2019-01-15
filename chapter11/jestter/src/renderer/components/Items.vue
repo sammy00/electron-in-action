@@ -1,6 +1,6 @@
 <template>
-  <section class="Items">
-    <h2>{{ title }}</h2>
+  <section class="row">
+    <h5>{{ title }}</h5>
     <item
       v-for="i in items"
       :id="i.id"

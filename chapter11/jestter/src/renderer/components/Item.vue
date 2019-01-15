@@ -1,8 +1,8 @@
 <template>
-  <article class="Item">
+  <article>
     <label>
-      <input type="checkbox" checked="packed" @change="onCheckOff">
-      {{ value }}
+      <input type="checkbox" class="filled-in" checked="packed" @change="onCheckOff">
+      <span>{{ value }}</span>
     </label>
   </article>
 </template>

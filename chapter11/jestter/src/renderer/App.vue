@@ -1,20 +1,13 @@
 <template>
   <div id="app">
     <!--<router-view></router-view>-->
-    <!--
-    <h1>Hello world!</h1>
-    <button class="full-width">This button does not do anything.</button>
-    -->
-    <div class="Application">
+    <div class="container">
       <items title="Unpacked Items" :items="unpacked" :on-check-off="markAsPacked"/>
       <items title="Packed Items" :items="packed" :on-check-off="markAsPacked"/>
-      <button class="button full-width" @click="markAllAsUnpacked">Mark All As Unpacked</button>
+      <div class="row center">
+        <button class="btn pink small" @click="markAllAsUnpacked">Mark All As Unpacked</button>
+      </div>
     </div>
-    <!--
-    {{ JSON.stringify(packed,null,' ') }}
-    <br>
-    {{ JSON.stringify(unpacked,null,' ') }}
-    -->
   </div>
 </template>
 
@@ -49,7 +42,7 @@ export default {
   methods: {
     markAsPacked(id) {
       let i = this.items.findIndex(item => id === item.id);
-      if (-1 === i) {
+      if (i === -1) {
         return;
       }
 
