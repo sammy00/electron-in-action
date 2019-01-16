@@ -56,7 +56,7 @@ export default {
       try {
         let items = await database("items").select();
         this.items = items;
-        console.log(JSON.stringify(items, null, " "));
+        //console.log(JSON.stringify(items, null, " "));
       } catch (error) {
         console.error(error);
       }

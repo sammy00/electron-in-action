@@ -1,26 +1,27 @@
-import path from 'path';
-import { remote } from 'electron';
-import knex from 'knex';
-import 'sqlite3';
+import path from 'path'
+import { remote } from 'electron'
+import knex from 'knex'
+import 'sqlite3'
 
-const { app } = remote;
+const { app } = remote
 
+// app.getPath defaults as ~/.config/Electron in linux
 const database = knex({
   client: 'sqlite3',
   connection: {
-    filename: path.join(app.getPath('userData'), 'jetsetter-items.sqlite')
+    filename: path.join(app.getPath('userData'), 'jetsetter-items.sqlite'),
   },
-  useNullAsDefault: true
-});
+  useNullAsDefault: true,
+})
 
-database.schema.hasTable('items').then(exists => {
+database.schema.hasTable('items').then((exists) => {
   if (!exists) {
-    return database.schema.createTable('items', t => {
-      t.increments('id').primary();
-      t.string('value', 100);
-      t.boolean('packed');
-    });
+    return database.schema.createTable('items', (t) => {
+      t.increments('id').primary()
+      t.string('value', 100)
+      t.boolean('packed')
+    })
   }
-});
+})
 
-export default database;
+export default database
