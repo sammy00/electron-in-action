@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import database from "./database";
+
 import Items from "./components/Items";
 import NewItem from "./components/NewItem";
 
