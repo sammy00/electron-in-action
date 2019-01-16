@@ -59,6 +59,16 @@ export default {
         console.error(error);
       }
     },
+    async deleteAllUnpacked() {
+      try {
+        await database("items")
+          .where("packed", false)
+          .delete();
+        this.fetch();
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async fetch() {
       try {
         let items = await database("items").select();
