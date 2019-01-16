@@ -13,7 +13,11 @@ const openDB = async () => {
 const database = openDB()
 
 export default {
-  add() {},
+  add(item) {
+    const tx = database.transaction('items', 'readwrite')
+    tx.objectStore('items').add(item)
+    return tx.complete
+  },
   getAll() {
     return database
       .transaction('items')
