@@ -1,0 +1,29 @@
+{
+  "name": "electron-webpack-quick-start",
+  "version": "0.0.0",
+  "license": "MIT",
+  "description": "An application for keeping track of the things you need to pack.",
+  "scripts": {
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "knex": "^0.16.3",
+    "materialize-css": "^1.0.0",
+    "source-map-support": "^0.5.10",
+    "sqlite3": "^4.0.6"
+  },
+  "devDependencies": {
+    "css-loader": "^2.1.0",
+    "electron": "4.0.1",
+    "electron-builder": "20.38.4",
+    "electron-webpack": "^2.6.2",
+    "electron-webpack-vue": "^2.2.3",
+    "vue": "^2.5.22",
+    "vue-meta": "^1.5.8",
+    "webpack": "4.28.4"
+  }
+}
