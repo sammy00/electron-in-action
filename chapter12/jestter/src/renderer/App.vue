@@ -49,6 +49,16 @@ export default {
       await database("items").insert(item);
       this.fetch();
     },
+    async delete(id) {
+      try {
+        await database("items")
+          .where("id", id)
+          .delete();
+        this.fetch();
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async fetch() {
       try {
         let items = await database("items").select();
@@ -66,11 +76,6 @@ export default {
       } catch (error) {
         console.error;
       }
-    },
-    markAllAsUnpacked() {
-      let items = this.items.map(item => ({ ...item, packed: false }));
-      this.items.splice(0);
-      this.items = items;
     },
     async unpackAll() {
       try {
