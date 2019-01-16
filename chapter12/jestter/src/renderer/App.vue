@@ -32,7 +32,8 @@ export default {
   },
   data() {
     return {
-      items: [{ value: "Pants", id: Date.now(), packed: false }]
+      //items: [{ value: "Pants", id: Date.now(), packed: false }]
+      items: []
     };
   },
   computed: {
@@ -47,6 +48,17 @@ export default {
     add(item) {
       this.items.push(item);
       //console.log(JSON.stringify(item, null, " "));
+      database("items")
+        .insert(item)
+        .then(this.fetch);
+    },
+    fetch() {
+      database("items")
+        .select()
+        .then(items => {
+          this.items = items;
+        })
+        .catch(console.error);
     },
     markAsPacked(id) {
       console.log("hello " + id);
@@ -65,6 +77,9 @@ export default {
       this.items.splice(0);
       this.items = items;
     }
+  },
+  mounted() {
+    this.fetch();
   }
 };
 </script>
