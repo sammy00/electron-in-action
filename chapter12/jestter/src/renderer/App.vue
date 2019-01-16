@@ -3,10 +3,13 @@
     <!--<router-view></router-view>-->
     <div class="container">
       <new-item :add-item="add"/>
-      <items title="Unpacked Items" :items="unpacked" :on-check-off="pack"/>
-      <items title="Packed Items" :items="packed" :on-check-off="pack"/>
+      <items title="Unpacked Items" :items="unpacked" :on-check-off="pack" :on-delete="remove"/>
+      <items title="Packed Items" :items="packed" :on-check-off="pack" :on-delete="remove"/>
       <div class="row center">
         <button class="btn pink small" @click="unpackAll">Mark All As Unpacked</button>
+      </div>
+      <div class="row center">
+        <button class="btn grey small" @click="removeAllUnpacked">Remove All Unpacked</button>
       </div>
     </div>
   </div>
@@ -49,26 +52,6 @@ export default {
       await database("items").insert(item);
       this.fetch();
     },
-    async delete(id) {
-      try {
-        await database("items")
-          .where("id", id)
-          .delete();
-        this.fetch();
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async deleteAllUnpacked() {
-      try {
-        await database("items")
-          .where("packed", false)
-          .delete();
-        this.fetch();
-      } catch (error) {
-        console.error(error);
-      }
-    },
     async fetch() {
       try {
         let items = await database("items").select();
@@ -85,6 +68,26 @@ export default {
         this.fetch();
       } catch (error) {
         console.error;
+      }
+    },
+    async remove(id) {
+      try {
+        await database("items")
+          .where("id", id)
+          .delete();
+        this.fetch();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async removeAllUnpacked() {
+      try {
+        await database("items")
+          .where("packed", false)
+          .delete();
+        this.fetch();
+      } catch (error) {
+        console.error(error);
       }
     },
     async unpackAll() {
