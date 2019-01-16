@@ -27,5 +27,9 @@ export default {
   remove() {},
   removeAllUnpacked() {},
   unpackAll() {},
-  update() {},
+  update(item) {
+    const tx = database.transaction('items', 'readwrite')
+    tx.objectStore('items').put(item)
+    return tx.complete
+  },
 }
