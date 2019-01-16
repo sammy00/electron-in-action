@@ -5,10 +5,10 @@
       <new-item :add-item="add"/>
       <items title="Unpacked Items" :items="unpacked" :on-check-off="pack" :on-delete="remove"/>
       <items title="Packed Items" :items="packed" :on-check-off="pack" :on-delete="remove"/>
-      <div class="row center">
+      <div class="row">
         <button class="btn pink small" @click="unpackAll">Mark All As Unpacked</button>
       </div>
-      <div class="row center">
+      <div class="row">
         <button class="btn grey small" @click="removeAllUnpacked">Remove All Unpacked</button>
       </div>
     </div>
@@ -56,6 +56,7 @@ export default {
       try {
         let items = await database("items").select();
         this.items = items;
+        console.log(JSON.stringify(items, null, " "));
       } catch (error) {
         console.error(error);
       }
