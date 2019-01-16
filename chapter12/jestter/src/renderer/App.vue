@@ -6,7 +6,7 @@
       <items title="Unpacked Items" :items="unpacked" :on-check-off="pack"/>
       <items title="Packed Items" :items="packed" :on-check-off="pack"/>
       <div class="row center">
-        <button class="btn pink small" @click="markAllAsUnpacked">Mark All As Unpacked</button>
+        <button class="btn pink small" @click="unpackAll">Mark All As Unpacked</button>
       </div>
     </div>
   </div>
@@ -71,6 +71,16 @@ export default {
       let items = this.items.map(item => ({ ...item, packed: false }));
       this.items.splice(0);
       this.items = items;
+    },
+    async unpackAll() {
+      try {
+        await database("items")
+          .select()
+          .update({ packed: false });
+        this.fetch();
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
   mounted() {
