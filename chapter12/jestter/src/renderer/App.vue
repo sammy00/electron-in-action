@@ -3,8 +3,8 @@
     <!--<router-view></router-view>-->
     <div class="container">
       <new-item :add-item="add"/>
-      <items title="Unpacked Items" :items="unpacked" :on-check-off="markAsPacked"/>
-      <items title="Packed Items" :items="packed" :on-check-off="markAsPacked"/>
+      <items title="Unpacked Items" :items="unpacked" :on-check-off="pack"/>
+      <items title="Packed Items" :items="packed" :on-check-off="pack"/>
       <div class="row center">
         <button class="btn pink small" @click="markAllAsUnpacked">Mark All As Unpacked</button>
       </div>
@@ -45,32 +45,27 @@ export default {
     }
   },
   methods: {
-    add(item) {
-      this.items.push(item);
-      //console.log(JSON.stringify(item, null, " "));
-      database("items")
-        .insert(item)
-        .then(this.fetch);
+    async add(item) {
+      await database("items").insert(item);
+      this.fetch();
     },
-    fetch() {
-      database("items")
-        .select()
-        .then(items => {
-          this.items = items;
-        })
-        .catch(console.error);
-    },
-    markAsPacked(id) {
-      console.log("hello " + id);
-      let i = this.items.findIndex(item => id === item.id);
-      if (i === -1) {
-        return;
+    async fetch() {
+      try {
+        let items = await database("items").select();
+        this.items = items;
+      } catch (error) {
+        console.error(error);
       }
-
-      let updated = this.items[i];
-      updated.packed = !updated.packed;
-      this.items.splice(i, 1);
-      this.items.unshift(updated);
+    },
+    async pack({ id, packed }) {
+      try {
+        await database("items")
+          .where("id", id)
+          .update({ packed: !packed });
+        this.fetch();
+      } catch (error) {
+        console.error;
+      }
     },
     markAllAsUnpacked() {
       let items = this.items.map(item => ({ ...item, packed: false }));

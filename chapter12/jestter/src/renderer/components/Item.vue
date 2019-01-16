@@ -1,7 +1,7 @@
 <template>
   <article>
     <label>
-      <input type="checkbox" class="filled-in" :checked="packed" @change="onCheckOff(id)">
+      <input type="checkbox" class="filled-in" :checked="packed" @change="onCheckOff({id, packed})">
       <span>{{ value }}</span>
     </label>
   </article>
