@@ -29,7 +29,16 @@ export default {
     tx.objectStore('items').delete(id)
     return tx.complete
   },
-  removeAllUnpacked() {},
+  removeAllUnpacked() {
+    let unpacked = this.getAll().filter((item) => !item.packed)
+
+    const tx = database.transaction('items', 'readwrite')
+    for (const item of unpacked) {
+      tx.objectStore('items').delete(item.id)
+    }
+
+    return tx.complete
+  },
   unpackAll() {
     let items = this.getAll().map((item) => ({ ...item, packed: false }))
 
