@@ -24,7 +24,11 @@ export default {
       .objectStore('items')
       .getAll()
   },
-  remove() {},
+  remove(id) {
+    const tx = database.transaction('items', 'readwrite')
+    tx.objectStore('items').delete(id)
+    return tx.complete
+  },
   removeAllUnpacked() {},
   unpackAll() {
     let items = this.getAll().map((item) => ({ ...item, packed: false }))
