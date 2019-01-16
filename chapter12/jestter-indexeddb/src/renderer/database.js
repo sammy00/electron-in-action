@@ -26,7 +26,16 @@ export default {
   },
   remove() {},
   removeAllUnpacked() {},
-  unpackAll() {},
+  unpackAll() {
+    let items = this.getAll().map((item) => ({ ...item, packed: false }))
+
+    const tx = database.transaction('items', 'readwrite')
+    for (const item of items) {
+      tx.objectStore('items').put(item)
+    }
+
+    return tx.complete
+  },
   update(item) {
     const tx = database.transaction('items', 'readwrite')
     tx.objectStore('items').put(item)
