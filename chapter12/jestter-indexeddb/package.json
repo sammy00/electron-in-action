@@ -9,7 +9,9 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
+    "dexie": "^2.0.4",
     "idb": "^3.0.2",
+    "material-design-icons-iconfont": "^4.0.4",
     "materialize-css": "^1.0.0",
     "source-map-support": "^0.5.10"
   },

@@ -3,16 +3,21 @@
     <!--<router-view></router-view>-->
     <div class="container">
       <new-item :add-item="add"/>
-      <items title="Unpacked Items" :items="unpacked" :on-check-off="markAsPacked"/>
-      <items title="Packed Items" :items="packed" :on-check-off="markAsPacked"/>
-      <div class="row center">
-        <button class="btn pink small" @click="markAllAsUnpacked">Mark All As Unpacked</button>
+      <items title="Unpacked Items" :items="unpacked" :on-check-off="pack" :on-delete="remove"/>
+      <items title="Packed Items" :items="packed" :on-check-off="pack" :on-delete="remove"/>
+      <div class="row">
+        <button class="btn pink small" @click="unpackAll">Mark All As Unpacked</button>
+      </div>
+      <div class="row">
+        <button class="btn grey small" @click="removeAllUnpacked">Remove All Unpacked</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import db from "./database";
+
 import Items from "./components/Items";
 import NewItem from "./components/NewItem";
 
@@ -30,39 +35,49 @@ export default {
   },
   data() {
     return {
-      items: [{ value: "Pants", id: Date.now(), packed: false }]
+      items: [] //[{ value: "Pants", id: Date.now(), packed: false }]
     };
   },
   computed: {
     packed() {
+      //console.log("packed " + JSON.stringify(this.items, null, " "));
       return this.items.filter(item => item.packed);
     },
     unpacked() {
+      //console.log("unpacked " + JSON.stringify(this.items, null, " "));
       return this.items.filter(item => !item.packed);
     }
   },
   methods: {
     add(item) {
-      this.items.push(item);
-      //console.log(JSON.stringify(item, null, " "));
+      //console.log("add " + JSON.stringify(item));
+      db.add(item);
+      this.fetch();
     },
-    markAsPacked(id) {
-      console.log("hello " + id);
-      let i = this.items.findIndex(item => id === item.id);
-      if (i === -1) {
-        return;
-      }
-
-      let updated = this.items[i];
-      updated.packed = !updated.packed;
-      this.items.splice(i, 1);
-      this.items.unshift(updated);
+    async fetch() {
+      this.items = await db.getAll();
+      //console.log("fetch " + JSON.stringify(this.items, null, " "));
     },
-    markAllAsUnpacked() {
-      let items = this.items.map(item => ({ ...item, packed: false }));
-      this.items.splice(0);
-      this.items = items;
+    pack(item) {
+      const updated = { ...item, packed: !item.packed };
+      db.update(updated);
+      this.fetch();
+    },
+    async remove(id) {
+      await db.remove(id);
+      this.fetch();
+    },
+    async removeAllUnpacked() {
+      await db.removeAllUnpacked();
+      this.fetch();
+    },
+    async unpackAll() {
+      await db.unpackAll();
+      this.fetch();
     }
+  },
+  async mounted() {
+    await this.fetch();
   }
 };
 </script>

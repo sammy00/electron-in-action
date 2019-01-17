@@ -1,57 +1,53 @@
-import { openDb } from 'idb'
+import Dexie from 'dexie'
 
-const openDB = async () => {
-  // 1 is a version tag
-  return await openDb('jetsetter', 1, (upgradeDB) => {
-    upgradeDB.createObjectStore('items', {
-      keyPath: 'id',
-      autoIncrement: true,
-    })
-  })
-}
+//import hello from './hello'
 
-const database = openDB()
+const db = new Dexie('jetsetter')
+db.version(1).stores({
+  items: `++id`,
+})
 
 export default {
-  add(item) {
-    const tx = database.transaction('items', 'readwrite')
-    tx.objectStore('items').add(item)
-    return tx.complete
+  async add(item) {
+    await db.open()
+    await db.items.add(item)
   },
-  getAll() {
-    return database
-      .transaction('items')
-      .objectStore('items')
-      .getAll()
+  async getAll() {
+    await db.open()
+    //console.log('---' + JSON.stringify(await db.items.toArray(), null, ' '))
+    return db.items.toArray()
   },
-  remove(id) {
-    const tx = database.transaction('items', 'readwrite')
-    tx.objectStore('items').delete(id)
-    return tx.complete
+  async remove(id) {
+    await db.open()
+    await db.items
+      .where('id')
+      .equals(id)
+      .delete()
   },
-  removeAllUnpacked() {
-    let unpacked = this.getAll().filter((item) => !item.packed)
-
-    const tx = database.transaction('items', 'readwrite')
-    for (const item of unpacked) {
-      tx.objectStore('items').delete(item.id)
+  async removeAllUnpacked() {
+    try {
+      await db.open()
+      return db.items.filter((item) => !item.packed).delete()
+    } catch (error) {
+      console.error(error)
     }
-
-    return tx.complete
   },
-  unpackAll() {
-    let items = this.getAll().map((item) => ({ ...item, packed: false }))
+  async update(item) {
+    await db.open()
+    await db.items.update(item.id, item)
+  },
+  async unpackAll() {
+    try {
+      //await db.open()
+      let old = (await this.getAll()).map((item) => item.id)
 
-    const tx = database.transaction('items', 'readwrite')
-    for (const item of items) {
-      tx.objectStore('items').put(item)
+      await db.transaction('rw', db.items, async () => {
+        for (let i of old) {
+          await db.items.update(i, { packed: false })
+        }
+      })
+    } catch (error) {
+      console.error(error)
     }
-
-    return tx.complete
-  },
-  update(item) {
-    const tx = database.transaction('items', 'readwrite')
-    tx.objectStore('items').put(item)
-    return tx.complete
   },
 }

@@ -4,6 +4,7 @@ import Meta from 'vue-meta'
 import App from './App'
 
 import 'materialize-css/dist/css/materialize.min.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.config.productionTip = false
 
