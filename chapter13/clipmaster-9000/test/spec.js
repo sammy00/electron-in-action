@@ -44,6 +44,12 @@ describe('Clipmaster 9000', function() {
     return assert.equal(title, 'Clipmaster 9000')
   })
 
+  it('should not have clippings when it starts up', async () => {
+    await app.client.waitUntilWindowLoaded()
+    const clippings = await app.client.$$('.clippings-list-item')
+    return assert.equal(clippings.length, 0)
+  })
+
   it('shows an initial window', async () => {
     const nWindow = await app.client.getWindowCount()
     return assert.equal(nWindow, 1)
