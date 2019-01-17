@@ -3,3 +3,4 @@
 ## Progress
 
 - [x] Chapter11. Using transpilers and frameworks
+- [x] Chapter12. Persisting user data and using native Node.js modules
