@@ -77,6 +77,18 @@ describe('Clipmaster 9000', function() {
     return assert.equal(clippings.length, 0)
   })
 
+  it('should write the clipping text to the clipboard', async () => {
+    await app.client.waitUntilWindowLoaded()
+    await app.electron.clipboard.writeText('Vegan Ham')
+    await app.client.click('#copy-from-clipboard')
+    await app.electron.clipboard.writeText('Something different')
+    await app.client.click('.copy-clipping')
+
+    const clipboardText = await app.electron.clipboard.readText()
+
+    return assert.equal(clipboardText, 'Vegan Ham')
+  })
+
   it('shows an initial window', async () => {
     const nWindow = await app.client.getWindowCount()
     return assert.equal(nWindow, 1)
