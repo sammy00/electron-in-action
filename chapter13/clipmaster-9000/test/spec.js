@@ -57,6 +57,15 @@ describe('Clipmaster 9000', function() {
     return assert.equal(clippings.length, 1)
   })
 
+  it('should have the correct text in a new clipping', async () => {
+    await app.client.waitUntilWindowLoaded()
+    await app.electron.clipboard.writeText('Vegan Ham')
+    await app.client.click('#copy-from-clipboard')
+    const clippingText = await app.client.getText('.clipping-text')
+
+    return assert.equal(clippingText, 'Vegan Ham')
+  })
+
   it('should successfully remove a clipping', async () => {
     await app.client.waitUntilWindowLoaded()
     await app.client
