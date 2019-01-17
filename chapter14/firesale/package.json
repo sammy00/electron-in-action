@@ -1,0 +1,31 @@
+{
+  "name": "firesale",
+  "version": "1.0.0",
+  "description": "Completed code from [Electron in Action](http://bit.ly/electronjs).",
+  "main": "./app/main.js",
+  "author": "sammyne",
+  "license": "ISC",
+  "dependencies": {
+    "marked": "^0.5.1",
+    "materialize-css": "1.0.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^4.0.1",
+    "electron-builder": "^20.38.5"
+  },
+  "build": {
+    "appId": "com.sammyne.firesale",
+    "productName": "Fire Sale",
+    "copyright": "Copyright © 2019 sammyne",
+    "linux": {
+      "maintainer": "sammyne",
+      "target": [
+        "tar.xz"
+      ]
+    }
+  }
+}

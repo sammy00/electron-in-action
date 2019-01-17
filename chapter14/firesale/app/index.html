@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline';
+      connect-src *"
+    />
+    <title>Fire Sale</title>
+    <!-- Import materialize.css -->
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="../node_modules/materialize-css/dist/css/materialize.min.css"
+      media="screen,projection"
+    />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <section class="controls row">
+      <div class="col s12">
+        <button id="new-file" class="btn">New File</button>
+        <button id="open-file" class="btn">Open File</button>
+        <button id="save-markdown" class="btn" disabled>Save File</button>
+        <button id="revert" class="btn" disabled>Revert</button>
+        <button id="save-html" class="btn">Save HTML</button>
+        <button id="show-file" class="btn" disabled>Show File</button>
+        <button id="open-in-default" class="btn" disabled>
+          Open in Default Application
+        </button>
+      </div>
+    </section>
+
+    <section class="row content">
+      <div class="col s6 card">
+        <textarea class="raw-markdown" id="markdown"></textarea>
+        <label for="markdown" hidden>Markdown Content</label>
+      </div>
+      <div class="col s6 card">
+        <div class="rendered-html" id="html"></div>
+      </div>
+    </section>
+
+    <script>
+      require('./renderer.js');
+    </script>
+
+    <!-- JavaScript at end of body for optimized loading -->
+    <script
+      type="text/javascript"
+      src="../node_modules/materialize-css/dist/js/materialize.min.js"
+    ></script>
+  </body>
+</html>
