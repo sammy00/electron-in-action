@@ -26,6 +26,12 @@ describe('Clipmaster 9000', function() {
   //  assert.ok(true);
   //});
 
+  it('does not have the developer tools open', async()=>{
+    const devToolsAreOpen = await app.client.waitUntilWindowLoaded().browserWindow.isDevToolsOpened()
+
+    return assert.equal(devToolsAreOpen,false)
+  })
+
   it('has the correct title', async () => {
     const title = await app.client.waitUntilWindowLoaded().getTitle()
     return assert.equal(title, 'Clipmaster 9000')
