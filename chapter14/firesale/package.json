@@ -24,7 +24,7 @@
     "linux": {
       "maintainer": "sammyne",
       "target": [
-        "tar.xz"
+        "AppImage"
       ]
     }
   }
