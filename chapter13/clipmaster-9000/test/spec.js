@@ -50,6 +50,13 @@ describe('Clipmaster 9000', function() {
     return assert.equal(clippings.length, 0)
   })
 
+  it('should have one clipping when the "Copy from Clipboard" button has been pressed', async () => {
+    await app.client.waitUntilWindowLoaded()
+    await app.client.click('#copy-from-clipboard')
+    const clippings = await app.client.$$('.clippings-list-item')
+    return assert.equal(clippings.length, 1)
+  })
+
   it('shows an initial window', async () => {
     const nWindow = await app.client.getWindowCount()
     return assert.equal(nWindow, 1)
