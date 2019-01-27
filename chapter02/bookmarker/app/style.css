@@ -10,5 +10,5 @@ html {
 
 body,
 input {
-  font: menu;
+  font: menu; /* unique to Chromium and allows us to use the system font in CSS */
 }

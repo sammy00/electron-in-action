@@ -6,7 +6,7 @@
   "author": "sammy00",
   "license": "ISC",
   "dependencies": {
-    "electron": "^3.0.8"
+    "electron": "^4.0.2"
   },
   "scripts": {
     "start": "electron ."
