@@ -18,5 +18,6 @@ markdownView.addEventListener("keyup", (event) => {
 
 // Converting Markdown to HTML
 const renderMarkdownToHTML = (markdown) => {
+  // sanitize as true to thwart accidental script injections
   htmlView.innerHTML = marked(markdown, { sanitize: true })
 }
