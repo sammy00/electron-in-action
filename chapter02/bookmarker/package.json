@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Our very first Electron application",
   "main": "./app/main.js",
-  "author": "sammy00",
+  "author": "sammyne",
   "license": "ISC",
   "dependencies": {
     "electron": "^4.0.2"
