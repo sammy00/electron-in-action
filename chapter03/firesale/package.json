@@ -1,8 +1,8 @@
 {
   "name": "firesale",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./app/main.js",
-  "author": "samy00",
+  "author": "samyne",
   "license": "ISC",
   "dependencies": {
     "electron": "^3.0.8",
