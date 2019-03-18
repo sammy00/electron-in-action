@@ -121,7 +121,9 @@ const template = [
       },
       {
         label: 'Toggle Developer Tool',
-        click(item, focusedWindow) {
+        // Click can optionally take the menu item itself and the 
+        // currently focused window, and an event object
+        click(_, focusedWindow) {
           if (focusedWindow) {
             focusedWindow.webContents.toggleDevTools();
           }
