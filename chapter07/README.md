@@ -23,6 +23,8 @@
 ### 7.1.1 macOS and the case of the missing `Edit` menu 
 
 - In macOS, the menu is called `Electron` rather than `Edit` because the first menu on macOS is always the Application menu
+    - Solution: `unshift` the wanted menu item to the front of the `Menu`
+    > `Electron` is always the default name in the menu bar until the app is packaged and deployed
 - `process.platform` returns the name of the platform in which the application is currently executing, which is one of five strings
     - `darwin`: upon which macOS is built
     - `freebsd`

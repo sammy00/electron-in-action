@@ -47,7 +47,7 @@ const createWindow = () => {
     y = b + 10;
   }
 
-  let newWindow = new BrowserWindow({ x, y, show: false });
+  let newWindow = new BrowserWindow({ x, y, show: false, title: "FireSale" });
 
   newWindow.loadFile(__dirname + '/index.html');
 
